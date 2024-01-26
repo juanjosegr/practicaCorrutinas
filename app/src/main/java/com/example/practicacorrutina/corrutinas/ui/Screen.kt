@@ -37,7 +37,7 @@ fun Boton_cambio_Color(screenVM: ScreenVM){
 
 @Composable
 fun Boton_llamda_api(screenVM: ScreenVM){
-    Button(onClick = { screenVM.bloqueo_app() }) {
+    Button(onClick = { screenVM.fetchData() }) {
         Text(text = "Llamar API")
     }
 }

@@ -5,6 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ScreenVM: ViewModel(){
 
@@ -28,4 +33,17 @@ class ScreenVM: ViewModel(){
         cont++
         resultState= "Respuesta de la API $cont"
     }
+
+    fun fetchData() {
+        cont++
+        //Nos permite crear una corrutina desde un ViewModel
+        viewModelScope.launch {
+            val result = withContext(Dispatchers.IO) {
+                delay(5000)
+                "Respuesta de la API $cont"
+            }
+            resultState = result
+        }
+    }
+
 }
