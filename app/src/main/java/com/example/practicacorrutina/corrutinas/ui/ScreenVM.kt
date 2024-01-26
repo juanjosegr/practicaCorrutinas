@@ -16,6 +16,7 @@ class ScreenVM: ViewModel(){
     private var color by mutableStateOf(false)
     private var cont by mutableStateOf(0)
     var resultState by mutableStateOf("")
+    var isLoading by mutableStateOf(false)
 
     fun cambio_color(){
         color = !color
@@ -34,7 +35,8 @@ class ScreenVM: ViewModel(){
         resultState= "Respuesta de la API $cont"
     }
 
-    fun fetchData() {
+   /*
+   fun fetchData() {
         cont++
         //Nos permite crear una corrutina desde un ViewModel
         viewModelScope.launch {
@@ -45,5 +47,27 @@ class ScreenVM: ViewModel(){
             resultState = result
         }
     }
-
+    */
+   fun fetchData() {
+       cont++
+       //Nos permite crear una corrutina desde un ViewModel
+       viewModelScope.launch {
+           try {
+               isLoading = true
+               llamarApi()
+           } catch (e: Exception) {
+               println("Error ${e.message}")
+           } finally {
+               isLoading = false
+           }
+       }
+   }
+    //Solo funcionan dentro de una corrutina u otra función suspendida
+    private suspend fun llamarApi() {
+        val result = withContext(Dispatchers.IO) {
+            delay(5000)
+            "Respuesta de la API $cont"
+        }
+        resultState = result
+    }
 }
